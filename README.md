@@ -1,3 +1,9 @@
+# Fork of Alias-Free Generative Adversarial Networks (StyleGAN3)
+
+## Changes from the official repository
+
+- Added `export_gen_to_pt.py` script to export the `G_ema` generator in snapshots to `.pt` format. 
+
 ## Alias-Free Generative Adversarial Networks (StyleGAN3)<br><sub>Official PyTorch implementation of the NeurIPS 2021 paper</sub>
 
 ![Teaser image](./docs/stylegan3-teaser-1920x1006.png)
