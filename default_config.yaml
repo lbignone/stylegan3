@@ -1,0 +1,44 @@
+cluster_name: default
+
+max_workers: 0
+
+docker:
+    image: "rayproject/ray:latest-gpu"
+    container_name: "ray_container"
+    # worker_run_options: []
+
+idle_timeout_minutes: 5
+
+provider:
+    type: aws
+    region: us-east-1
+    cache_stopped_nodes: False
+
+auth:
+    ssh_user: ec2-user
+
+available_node_types:
+    ray.head.default:
+        resources: {}
+        node_config:
+            InstanceType: t2.micro
+            ImageId: ami-0e9d3c53b79c2cc6f  # Deep Learning AMI GPU CUDA 11.4.3 (Amazon Linux 2) 20220316
+            BlockDeviceMappings:
+                - DeviceName: /dev/xvda
+                  Ebs:
+                      VolumeSize: 35
+
+initialization_commands: []
+
+setup_commands: []
+
+#file_mounts: {
+#  "/scratch": "."
+#}
+
+rsync_exclude:
+    - "**/.git"
+    - "**/.git/**"
+
+rsync_filter:
+    - ".gitignore"

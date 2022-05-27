@@ -21,4 +21,6 @@ dependencies:
     - glfw==2.2.0
     - pyopengl==3.1.5
     - imageio-ffmpeg==0.4.3
-    - pyspng
+    - pyspng==0.1.0
+    - hydra-core==1.2
+    - hydra-ray-launcher==1.2

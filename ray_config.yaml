@@ -1,0 +1,50 @@
+cluster_name: stylegan3_ray
+
+max_workers: 0
+
+idle_timeout_minutes: 5
+
+docker:
+  image: lucasbignone/stylegan3_ray:0.1
+  container_name: stylegan3_ray
+  run_options:
+    - --mount type=bind,source="$(pwd)",target=/output
+
+provider:
+  type: aws
+  region: us-east-1
+  cache_stopped_nodes: False
+
+auth:
+    ssh_user: ec2-user
+
+available_node_types:
+  ray.head.default:
+    resources: {}
+    node_config:
+      InstanceType: t2.micro
+      ImageId: ami-0e9d3c53b79c2cc6f  # Deep Learning AMI GPU CUDA 11.4.3 (Amazon Linux 2) 20220316
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 35
+
+initialization_commands:
+  - sudo amazon-linux-extras install epel -y && sudo yum-config-manager --enable epel
+  - sudo yum -y install incron
+setup_commands: []
+
+#file_mounts: {
+#  "/workspace/docs": "/home/lbignone/Development/stylegan3_fork/docs",
+#}
+
+# Patterns for files to exclude when running rsync up or rsync down
+rsync_exclude:
+    - "**/.git"
+    - "**/.git/**"
+
+# Pattern files to use for filtering out files when running rsync up or rsync down. The file is searched for
+# in the source directory and recursively through all subdirectories. For example, if .gitignore is provided
+# as a value, the behavior will match git's behavior for finding and using .gitignore files.
+rsync_filter:
+    - ".gitignore"
