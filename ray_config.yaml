@@ -8,7 +8,7 @@ docker:
   image: lucasbignone/stylegan3_ray:0.1
   container_name: stylegan3_ray
   run_options:
-    - --mount type=bind,source="$(pwd)",target=/output
+    - --mount type=bind,source="$(pwd)/output",target=/output  #  mount a persistent location for outputs
 
 provider:
   type: aws
@@ -30,13 +30,13 @@ available_node_types:
             VolumeSize: 35
 
 initialization_commands:
-  - sudo amazon-linux-extras install epel -y && sudo yum-config-manager --enable epel
-  - sudo yum -y install incron
+  - sudo amazon-linux-extras install epel -y && sudo yum-config-manager --enable epel && sudo yum -y install incron  # install icron
+  - mkdir output  #  output location
 setup_commands: []
 
-#file_mounts: {
-#  "/workspace/docs": "/home/lbignone/Development/stylegan3_fork/docs",
-#}
+file_mounts: {
+  "/workspace": "./",  # upload current directory to the docker working directory
+}
 
 # Patterns for files to exclude when running rsync up or rsync down
 rsync_exclude:
