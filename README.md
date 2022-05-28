@@ -2,8 +2,17 @@
 
 ## Changes from the official repository
 
-- Added `export_gen_to_pt.py` script to export the `G_ema` generator in snapshots to `.pt` format. 
-
+- Added `export_gen_to_pt.py` script to export the `G_ema` generator in snapshots to `.pt` format.
+- Modified Dockerfile that includes:
+  - extra python packages: 
+    - ray
+    - inotify
+  - additional software:
+    - screen
+    - aws cli v2
+- Added `watch_and_sync_to_s3.py` script to automatically sync training output to s3.
+- Example 'ray_config.yaml' configuration file
+  
 ## Alias-Free Generative Adversarial Networks (StyleGAN3)<br><sub>Official PyTorch implementation of the NeurIPS 2021 paper</sub>
 
 ![Teaser image](./docs/stylegan3-teaser-1920x1006.png)
