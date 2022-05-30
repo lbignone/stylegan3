@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 def _main():
-    source = Path("/output")
+    source = Path("multirun")
     if not source.is_dir():
         raise NotADirectoryError(
             errno.ENOENT, os.strerror(errno.ENOENT), source

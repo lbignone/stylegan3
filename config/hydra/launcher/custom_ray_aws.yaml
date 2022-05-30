@@ -1,0 +1,54 @@
+defaults:
+  - ray_aws
+
+env_setup:
+  commands: []
+
+ray:
+  cluster:
+    cluster_name: stylegan3_ray
+    max_workers: 0
+    idle_timeout_minutes: 5
+
+    docker:
+      image: lucasbignone/stylegan3_ray:0.3
+      container_name: stylegan3_ray
+      run_options:
+        - --mount type=bind,source="$(pwd)/outputs",target=/workspace/multirun  #  mount a persistent location for outputs
+        - --mount type=bind,source="$(pwd)/datasets",target=/workspace/datasets  #  mount a persistent location for datasets
+
+    provider:
+      type: aws
+      region: us-east-1
+      availability_zone: us-east-1a,us-east-1b
+      cache_stopped_nodes: False
+
+    auth:
+      ssh_user: ec2-user
+
+    available_node_types:
+      ray.head.default:
+        resources: { }
+        node_config:
+          InstanceType: t2.micro
+          ImageId: ami-0e9d3c53b79c2cc6f  # Deep Learning AMI GPU CUDA 11.4.3 (Amazon Linux 2) 20220316
+          BlockDeviceMappings:
+            - DeviceName: /dev/xvda
+              Ebs:
+                VolumeSize: 35
+                VolumeType: gp3
+
+    initialization_commands:
+      - mkdir -p outputs  #  output location
+      - mkdir -p datasets  #  datasets location
+
+    setup_commands:
+      - screen -d -m python watch_and_sync_to_s3.py
+
+    file_mounts: {
+      "/workspace": "./",  # upload current directory to the docker working directory
+    }
+
+stop_cluster: false
+sync_up:
+  source_dir: .
