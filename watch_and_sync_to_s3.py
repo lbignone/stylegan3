@@ -3,10 +3,15 @@ import subprocess
 import errno
 import os
 from pathlib import Path
+import typer
 
 
-def _main():
-    source = Path("multirun")
+def _main(
+        source: Path = typer.Argument(..., help="The local path to watch and sync"),
+        bucket: str = typer.Argument(..., help="The s3 bucket where to sync up")
+):
+    """Watch SOURCE for IN_CLOSE_WRITE events and sync to a s3 bucket when triggered."""
+
     if not source.is_dir():
         raise NotADirectoryError(
             errno.ENOENT, os.strerror(errno.ENOENT), source
@@ -17,11 +22,10 @@ def _main():
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
         if 'IN_CLOSE_WRITE' in type_names:
-            # subprocess.run(["rsync", "-r", "/workspace/source/", "/workspace/target"])
             subprocess.run([
-                "aws", "s3", "sync", f"{source}", "s3://innova-conicet-output"
+                "aws", "s3", "sync", f"{source}", f"{bucket}"
             ])
 
 
 if __name__ == '__main__':
-    _main()
+    typer.run(_main)

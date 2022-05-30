@@ -14,8 +14,8 @@ ray:
       image: lucasbignone/stylegan3_ray:0.3
       container_name: stylegan3_ray
       run_options:
-        - --mount type=bind,source="$(pwd)/outputs",target=/workspace/multirun  #  mount a persistent location for outputs
-        - --mount type=bind,source="$(pwd)/datasets",target=/workspace/datasets  #  mount a persistent location for datasets
+        - --mount type=bind,source="$(pwd)/${outputs_dir}",target=/workspace/${outputs_dir}  #  mount a persistent location for outputs
+        - --mount type=bind,source="$(pwd)/${datasets_dir}",target=/workspace/${datasets_dir}  # mount a persistent location for datasets
 
     provider:
       type: aws
@@ -39,14 +39,14 @@ ray:
                 VolumeType: gp3
 
     initialization_commands:
-      - mkdir -p outputs  #  output location
-      - mkdir -p datasets  #  datasets location
+      - mkdir -p ${outputs_dir}  #  output location
+      - mkdir -p ${datasets_dir}  #  datasets location
 
     setup_commands:
-      - screen -d -m python watch_and_sync_to_s3.py
+      - screen -d -m python watch_and_sync_to_s3.py ${outputs_dir} ${outputs_bucket}
 
     file_mounts: {
-      "/workspace": "./",  # upload current directory to the docker working directory
+      "/workspace": "./",
     }
 
 stop_cluster: false

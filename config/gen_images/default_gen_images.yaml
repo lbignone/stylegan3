@@ -1,0 +1,8 @@
+network_pkl: https://api.ngc.nvidia.com/v2/models/nvidia/research/stylegan3/versions/1/files/stylegan3-r-afhqv2-512x512.pkl
+seeds: ???
+truncation_psi: 1
+class_idx:
+noise_mode: const
+translate: 0,0
+rotate: 0
+outdir: out

@@ -24,3 +24,5 @@ dependencies:
     - pyspng==0.1.0
     - hydra-core==1.2
     - hydra-ray-launcher==1.2
+    - inotify==0.2.10
+    - typer==0.4.1

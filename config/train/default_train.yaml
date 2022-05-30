@@ -1,0 +1,32 @@
+outdir: $outputs_dir
+cfg: stylegan3-r
+data: pets.zip
+gpus: 1
+batch: 32
+gamma: 0.5
+cond: False
+mirror: False
+aug: ada
+resume:
+freezed:
+
+p: 0.2
+target: 0.6
+batch-gpu: 16
+cbase: 32768
+cmax: 512
+glr:
+dlr: 0.002
+map-depth:
+mbstd-group: 4
+
+desc:
+metrics: fid50k_full
+kimg: 25000
+tick: 4
+snap: 50
+seed: 0
+fp32: False
+nobench: False
+workers: 3
+n: False

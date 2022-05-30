@@ -1,2 +1,8 @@
 defaults:
+  - train: default_train
+  - gen_images: default_gen_images
   - override hydra/launcher: custom_ray_aws
+
+outputs_dir: multirun
+outputs_bucket: s3://innova-conicet-output
+datasets_dir: datasets

@@ -2,7 +2,8 @@ import logging
 from omegaconf import DictConfig, OmegaConf
 import hydra
 
-from train import main
+from gen_images import generate_images
+from gen_images import parse_range, parse_vec2
 
 # A logger for this file
 log = logging.getLogger(__name__)
@@ -12,7 +13,9 @@ log = logging.getLogger(__name__)
 def my_app(cfg):
     log.info("Info level message")
     log.debug("Debug level message")
-    main.callback(**cfg.train)
+    cfg.gen_images["seeds"] = parse_range(cfg.gen_images["seeds"])
+    cfg.gen_images["translate"] = parse_vec2(cfg.gen_images["translate"])
+    generate_images.callback(**cfg.gen_images)
 
 
 if __name__ == "__main__":
