@@ -1,6 +1,7 @@
 import logging
 from omegaconf import DictConfig, OmegaConf
 import hydra
+from hydra.core.hydra_config import HydraConfig
 
 from gen_images import generate_images
 from gen_images import parse_range, parse_vec2
@@ -15,6 +16,11 @@ def my_app(cfg):
     log.debug("Debug level message")
     cfg.gen_images["seeds"] = parse_range(cfg.gen_images["seeds"])
     cfg.gen_images["translate"] = parse_vec2(cfg.gen_images["translate"])
+
+    hydra_config = HydraConfig.get()
+
+    cfg.gen_images["outdir"] = hydra_config.runtime.output_dir
+
     generate_images.callback(**cfg.gen_images)
 
 

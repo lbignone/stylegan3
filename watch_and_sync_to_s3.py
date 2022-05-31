@@ -21,7 +21,7 @@ def _main(
 
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
-        if 'IN_CLOSE_WRITE' in type_names:
+        if ('IN_CLOSE_WRITE' in type_names) or ('IN_MOVED_TO' in type_names):
             subprocess.run([
                 "aws", "s3", "sync", f"{source}", f"{bucket}"
             ])
