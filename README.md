@@ -12,6 +12,7 @@
     - aws cli v2
 - Added `watch_and_sync_to_s3.py` script to automatically sync training output to s3.
 - Example 'ray_config.yaml' configuration file
+- Example 'ray_g4dn.xlarge_config.yaml' configuration file
   
 ## Alias-Free Generative Adversarial Networks (StyleGAN3)<br><sub>Official PyTorch implementation of the NeurIPS 2021 paper</sub>
 
