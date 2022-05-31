@@ -1,0 +1,49 @@
+cluster_name: stylegan3_ray
+
+max_workers: 0
+
+idle_timeout_minutes: 5
+
+docker:
+  image: lucasbignone/stylegan3_ray:0.3
+  container_name: stylegan3_ray
+  run_options:
+    - --gpus all
+    - --mount type=bind,source="$(pwd)/disk1/outputs",target=/workspace/outputs  #  mount a persistent location for outputs
+    - --mount type=bind,source="$(pwd)/disk1/datasets",target=/workspace/datasets  #  mount a persistent location for datasets
+
+provider:
+  type: aws
+  region: us-east-1
+  cache_stopped_nodes: False
+
+auth:
+    ssh_user: ec2-user
+
+available_node_types:
+  ray.head.default:
+    resources: {}
+    node_config:
+      InstanceType: g4dn.xlarge
+      ImageId: ami-0e9d3c53b79c2cc6f  # Deep Learning AMI GPU CUDA 11.4.3 (Amazon Linux 2) 20220316
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 35
+            VolumeType: gp3
+
+initialization_commands:
+  - sudo mkfs -t ext4 /dev/nvme1n1
+  - mkdir disk1
+  - sudo mount /dev/nvme1n1 disk1
+  - sudo chown -R ec2-user disk1
+  - mkdir -p disk1/outputs  #  output location
+  - mkdir -p disk1/datasets  #  datasets location
+#  - aws s3 cp s3://innova-conicet-imaging-datasets/galaxies/eagle_galrand_64x64.zip disk1/datasets/.
+
+setup_commands:
+  - screen -d -m python watch_and_sync_to_s3.py outputs s3://innova-conicet-output
+
+file_mounts: {
+  "/workspace": "./",  # upload current directory to the docker working directory
+}
