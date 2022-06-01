@@ -1,0 +1,8 @@
+network_pkl: ???
+seeds: ???
+truncation_psi: 1
+class_idx:
+noise_mode: const
+translate: 0,0
+rotate: 0
+outdir:  # This should be ignored, You should override the hydra output dir instead

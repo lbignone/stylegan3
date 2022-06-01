@@ -1,0 +1,36 @@
+outdir:  # This should be ignored, You should override the hydra output dir instead
+cfg: ???
+data: ???
+gpus: ???
+batch: ???
+gamma: ???
+
+# Optional features.
+cond: False
+mirror: False
+aug: 'ada'
+resume:
+freezed: 0
+
+# Misc hyperparameters.
+p: 0.2
+target: 0.6
+batch_gpu:
+cbase: 32768
+cmax: 512
+glr:
+dlr: 0.002
+map_depth:
+mbstd_group: 4
+
+# Misc settings.
+desc:
+metrics: fid50k_full
+kimg: 25000
+tick: 4
+snap: 50
+seed: 0
+fp32: False
+nobench: False
+workers: 3
+dry_run: False
