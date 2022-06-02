@@ -1,0 +1,18 @@
+defaults:
+  - custom_ray_aws
+
+ray:
+  cluster:
+    available_node_types:
+      ray.head.default:
+        node_config:
+          InstanceType: g4dn.xlarge
+
+    initialization_commands:
+      - sudo mkfs -t ext4 /dev/nvme1n1
+      - mkdir disk1
+      - sudo mount /dev/nvme1n1 disk1
+      - sudo chown -R ec2-user disk1
+      - mkdir -p ${outputs_dir}
+      - mkdir -p ${datasets_dir}
+      - conda env update -n hydra_${python_version:micro} --file environment.yml

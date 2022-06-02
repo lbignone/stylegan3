@@ -1,0 +1,13 @@
+defaults:
+  - gen_images: config
+  - override hydra/launcher: custom_ray_aws
+#  - override hydra/launcher: g4dn.xlarge.yaml
+
+hydra:
+  sweep:
+    dir: ${outputs_dir}/${now:%Y-%m-%d}/${now:%H-%M-%S}
+
+outputs_dir: disk1/multirun
+datasets_dir: disk1/datasets
+
+outputs_bucket: s3://innova-conicet-output

@@ -1,0 +1,47 @@
+defaults:
+  - ray_aws
+
+ray:
+  cluster:
+    cluster_name: stylegan3_ray
+    max_workers: 0
+    idle_timeout_minutes: 5
+
+    provider:
+      type: aws
+      region: us-east-1
+      availability_zone: us-east-1a,us-east-1b
+      cache_stopped_nodes: False
+
+    auth:
+      ssh_user: ec2-user
+
+    available_node_types:
+      ray.head.default:
+        resources: { }
+        node_config:
+          InstanceType: t2.micro
+#          ImageId: ami-0e9d3c53b79c2cc6f  # Deep Learning AMI GPU CUDA 11.4.3 (Amazon Linux 2) 20220316
+          ImageId: ami-00ab1614b421d5575  # Deep Learning AMI GPU PyTorch 1.11.0 (Amazon Linux 2) 20220526
+          BlockDeviceMappings:
+            - DeviceName: /dev/xvda
+              Ebs:
+#                VolumeSize: 35
+                VolumeSize: 45
+                VolumeType: gp3
+
+    initialization_commands:
+      - mkdir -p ${outputs_dir}
+      - mkdir -p ${datasets_dir}  #  datasets location
+      - conda env update -n hydra_${python_version:micro} --file environment.yml
+
+    setup_commands:
+      - screen -d -m -S output_watch python watch_and_sync_to_s3.py ${outputs_dir} ${outputs_bucket}
+
+    file_mounts: {
+      "./": "./",
+    }
+
+stop_cluster: false
+sync_up:
+  source_dir: .
