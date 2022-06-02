@@ -10,6 +10,7 @@ docker:
   run_options:
     - --gpus all
     - --mount type=bind,source="$(pwd)/disk1/outputs",target=/workspace/outputs  #  mount a persistent location for outputs
+    - --mount type=bind,source="$(pwd)/disk1/multirun",target=/workspace/multirun
     - --mount type=bind,source="$(pwd)/disk1/datasets",target=/workspace/datasets  #  mount a persistent location for datasets
 
 provider:
@@ -38,11 +39,13 @@ initialization_commands:
   - sudo mount /dev/nvme1n1 disk1
   - sudo chown -R ec2-user disk1
   - mkdir -p disk1/outputs  #  output location
+  - mkdir -p disk1/multirun  #  output location
   - mkdir -p disk1/datasets  #  datasets location
 #  - aws s3 cp s3://innova-conicet-imaging-datasets/galaxies/eagle_galrand_64x64.zip disk1/datasets/.
 
 setup_commands:
   - screen -d -m python watch_and_sync_to_s3.py outputs s3://innova-conicet-output
+  - screen -d -m python watch_and_sync_to_s3.py multirun s3://innova-conicet-output
 
 file_mounts: {
   "/workspace": "./",  # upload current directory to the docker working directory
