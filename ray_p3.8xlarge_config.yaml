@@ -30,7 +30,7 @@ available_node_types:
       BlockDeviceMappings:
         - DeviceName: /dev/xvda
           Ebs:
-            VolumeSize: 35
+            VolumeSize: 135
             VolumeType: gp3
 
 initialization_commands:
