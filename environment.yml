@@ -26,3 +26,4 @@ dependencies:
     - hydra-ray-launcher==1.2
     - inotify==0.2.10
     - typer==0.4.1
+    - astropy==5.1

@@ -15,6 +15,7 @@ import PIL.Image
 import json
 import torch
 import dnnlib
+from astropy.io import fits
 
 try:
     import pyspng
@@ -236,3 +237,44 @@ class ImageFolderDataset(Dataset):
         return labels
 
 #----------------------------------------------------------------------------
+
+
+class FitsFolderDataset(Dataset):
+    def __init__(self,
+        path,                   # Path to directory or zip.
+        resolution      = None, # Ensure specific resolution, None = highest available.
+        **super_kwargs,         # Additional arguments for the Dataset base class.
+    ):
+        self._path = path
+        self._zipfile = None
+
+        if os.path.isdir(self._path):
+            self._type = 'dir'
+            self._all_fnames = {os.path.relpath(os.path.join(root, fname), start=self._path) for root, _dirs, files in os.walk(self._path) for fname in files}
+        elif self._file_ext(self._path) == '.zip':
+            self._type = 'zip'
+            self._all_fnames = set(self._get_zipfile().namelist())
+        else:
+            raise IOError('Path must point to a directory or zip')
+
+        self._image_fnames = sorted(fname for fname in self._all_fnames if
+                                    self._file_ext(fname) in ["fits"])
+        if len(self._image_fnames) == 0:
+            raise IOError('No image files found in the specified path')
+
+        name = os.path.splitext(os.path.basename(self._path))[0]
+        raw_shape = [len(self._image_fnames)] + list(self._load_raw_image(0).shape)
+        if resolution is not None and (raw_shape[2] != resolution or raw_shape[3] != resolution):
+            raise IOError('Image files do not match the specified resolution')
+        super().__init__(name=name, raw_shape=raw_shape, **super_kwargs)
+
+    def _load_raw_image(self, raw_idx):
+        fname = self._image_fnames[raw_idx]
+        with self._open_file(fname) as f:
+            hdul = fits.open(f)
+            image = []
+            for i in range(1, len(hdul)):
+                image.append(hdul[i].data)
+
+            image = np.array(image)
+        return image
