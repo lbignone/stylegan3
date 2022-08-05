@@ -258,7 +258,7 @@ class FitsFolderDataset(Dataset):
             raise IOError('Path must point to a directory or zip')
 
         self._image_fnames = sorted(fname for fname in self._all_fnames if
-                                    self._file_ext(fname) in ["fits"])
+                                    self._file_ext(fname) in [".fits"])
         if len(self._image_fnames) == 0:
             raise IOError('No image files found in the specified path')
 
