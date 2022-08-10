@@ -48,7 +48,7 @@ class Dataset(torch.utils.data.Dataset):
         self.raw_dtype = self._load_raw_image(0).dtype
 
         # Apply xflip.
-        self._xflip = np.zeros(self._raw_idx.size, dtype=raw_dtype)
+        self._xflip = np.zeros(self._raw_idx.size, dtype=self.raw_dtype)
         if xflip:
             self._raw_idx = np.tile(self._raw_idx, 2)
             self._xflip = np.concatenate([self._xflip, np.ones_like(self._xflip)])
