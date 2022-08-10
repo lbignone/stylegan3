@@ -45,8 +45,10 @@ class Dataset(torch.utils.data.Dataset):
             np.random.RandomState(random_seed).shuffle(self._raw_idx)
             self._raw_idx = np.sort(self._raw_idx[:max_size])
 
+        self.raw_dtype = self._load_raw_image(0).dtype
+
         # Apply xflip.
-        self._xflip = np.zeros(self._raw_idx.size, dtype=np.uint8)
+        self._xflip = np.zeros(self._raw_idx.size, dtype=raw_dtype)
         if xflip:
             self._raw_idx = np.tile(self._raw_idx, 2)
             self._xflip = np.concatenate([self._xflip, np.ones_like(self._xflip)])
@@ -89,7 +91,7 @@ class Dataset(torch.utils.data.Dataset):
         image = self._load_raw_image(self._raw_idx[idx])
         assert isinstance(image, np.ndarray)
         assert list(image.shape) == self.image_shape
-        assert image.dtype == np.uint8
+        assert image.dtype == self.raw_dtype
         if self._xflip[idx]:
             assert image.ndim == 3 # CHW
             image = image[:, :, ::-1]
