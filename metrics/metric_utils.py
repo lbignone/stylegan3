@@ -283,7 +283,7 @@ def compute_feature_stats_for_generator(opts, detector_url, detector_kwargs, rel
 
         if images.shape[1] > 3:
             r, g, b = opts.rgb_channels
-            images = np.stack(
+            images = torch.stack(
                 (images[:, r, :, :], images[:, g, :, :], images[:, b, :, :]), dim=1
             )
 
