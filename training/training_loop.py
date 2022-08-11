@@ -388,7 +388,8 @@ def training_loop(
                 print('Evaluating metrics...')
             for metric in metrics:
                 result_dict = metric_main.calc_metric(metric=metric, G=snapshot_data['G_ema'],
-                    dataset_kwargs=training_set_kwargs, num_gpus=num_gpus, rank=rank, device=device)
+                    dataset_kwargs=training_set_kwargs, num_gpus=num_gpus, rank=rank,
+                                                      device=device, rgb_channels=rgb_channels)
                 if rank == 0:
                     metric_main.report_metric(result_dict, run_dir=run_dir, snapshot_pkl=snapshot_pkl)
                 stats_metrics.update(result_dict.results)
