@@ -4,6 +4,7 @@ data: ???
 gpus: ???
 batch: ???
 gamma: ???
+dataset_class: 'images'
 
 # Optional features.
 cond: False
@@ -34,3 +35,7 @@ fp32: False
 nobench: False
 workers: 3
 dry_run: False
+
+r_channel: 2
+g_channel: 1
+b_channel: 0

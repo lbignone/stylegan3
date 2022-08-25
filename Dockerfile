@@ -17,6 +17,8 @@ RUN pip install ray[default]==1.12.0 inotify==0.2.10
 
 RUN pip install astropy==5.1
 
+RUN pip install hydra-core==1.2
+
 RUN apt-get update && apt-get install -y screen
 
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
