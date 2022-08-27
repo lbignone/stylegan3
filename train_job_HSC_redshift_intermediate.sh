@@ -1,5 +1,5 @@
 
-CONFIG=ray_g4dn.xlarge_config.yaml
+CONFIG=ray_p3.8xlarge_config.yaml
 DATASET=HSC_redshift_intermediate_rescaled.zip
 
 # Start cluster
@@ -9,7 +9,10 @@ ray up -y ${CONFIG}
 ray exec ${CONFIG} "aws s3 cp s3://innova-conicet-imaging-datasets/galaxies/${DATASET} datasets/."
 
 # launch hydra with training job
-ray exec --screen ${CONFIG} "python hydra_train.py cfg=stylegan3-r data='datasets/${DATASET}' gpus=1 batch=32 gamma=0.5 aug=noaug dataset_class=fits"
+ray exec --screen ${CONFIG} "python hydra_train.py cfg=stylegan3-r data='datasets/${DATASET}' gpus=4 batch=32 gamma=0.5 aug=noaug dataset_class=fits"
+
+# wait for output folder structure creation
+sleep 60
 
 # start syncing output
 ray exec --screen ${CONFIG} "python watch_and_sync_to_s3.py outputs s3://innova-conicet-output"

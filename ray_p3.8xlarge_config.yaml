@@ -5,7 +5,7 @@ max_workers: 0
 idle_timeout_minutes: 5
 
 docker:
-  image: lucasbignone/stylegan3_ray:0.3
+  image: lucasbignone/stylegan3_ray:0.5
   container_name: stylegan3_ray
   run_options:
     - --gpus all
@@ -30,7 +30,7 @@ available_node_types:
       BlockDeviceMappings:
         - DeviceName: /dev/xvda
           Ebs:
-            VolumeSize: 135
+            VolumeSize: 250
             VolumeType: gp3
 
 initialization_commands:
@@ -40,9 +40,9 @@ initialization_commands:
   - mkdir -p disk1/datasets  #  datasets location
 #  - aws s3 cp s3://innova-conicet-imaging-datasets/galaxies/eagle_galrand_64x64.zip disk1/datasets/.
 
-setup_commands:
-  - screen -S sync_outputs -d -m python watch_and_sync_to_s3.py outputs s3://innova-conicet-output
-  - screen -S sync_multirun -d -m python watch_and_sync_to_s3.py multirun s3://innova-conicet-output
+#setup_commands:
+#  - screen -S sync_outputs -d -m python watch_and_sync_to_s3.py outputs s3://innova-conicet-output
+#  - screen -S sync_multirun -d -m python watch_and_sync_to_s3.py multirun s3://innova-conicet-output
 
 file_mounts: {
   "/workspace": "./",  # upload current directory to the docker working directory
