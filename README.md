@@ -7,6 +7,8 @@
   - extra python packages: 
     - ray
     - inotify
+    - astropy
+    - hydra
   - additional software:
     - screen
     - aws cli v2
@@ -14,6 +16,8 @@
 - Example 'ray_config.yaml' configuration file
 - Example 'ray_g4dn.xlarge_config.yaml' configuration file
 - train and gen_images scripts compatible with the [hydra framework](https://hydra.cc/)
+- Support for multiband images
+- Support for fits images
   
 ## Alias-Free Generative Adversarial Networks (StyleGAN3)<br><sub>Official PyTorch implementation of the NeurIPS 2021 paper</sub>
 
