@@ -21,6 +21,8 @@ RUN pip install h5py==3.7.0
 
 RUN pip install hydra-core==1.2
 
+RUN pip install protobuf==3.19.*
+
 RUN apt-get update && apt-get install -y screen
 
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"

@@ -142,7 +142,7 @@ def parse_comma_separated_list(s):
 @click.option('--gamma',        help='R1 regularization weight', metavar='FLOAT',               type=click.FloatRange(min=0), required=True)
 
 # Optional features.
-@click.option('--dataset-class',help='Train conditional model', metavar='STR', ype=click.Choice(['images', 'fits', 'hdf5']), default='images', show_default=True)
+@click.option('--dataset-class',help='Train conditional model', metavar='STR',                  type=click.Choice(['images', 'fits', 'hdf5']), default='images', show_default=True)
 @click.option('--cond',         help='Train conditional model', metavar='BOOL',                 type=bool, default=False, show_default=True)
 @click.option('--mirror',       help='Enable dataset x-flips', metavar='BOOL',                  type=bool, default=False, show_default=True)
 @click.option('--aug',          help='Augmentation mode',                                       type=click.Choice(['noaug', 'ada', 'fixed']), default='ada', show_default=True)
